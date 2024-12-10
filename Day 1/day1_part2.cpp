@@ -2,9 +2,9 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <unordered_map>
 
-int main() {
-
+int main () {
     int a, b;
 
     std::vector<int> listOne, listTwo;
@@ -17,19 +17,25 @@ int main() {
             listTwo.push_back(b);
         }
     }
-
+    
     myFile.close();
 
     sort(listOne.begin(), listOne.end());
     sort(listTwo.begin(), listTwo.end());
 
-    int total_distance = 0;
+    int similarity_score = 0;
 
-    for (int i = 0; i < listOne.size(); i++) {
-        total_distance += abs(listOne[i] - listTwo[i]);
+    std::unordered_map<int, int> map;
+
+    for (int i = 0; i < listTwo.size(); i++) {
+        map[listTwo[i]]++;
     }
 
-    std::cout << total_distance << std::endl;
+    for (int i = 0; i < listOne.size(); i++) {
+        similarity_score += listOne[i] * map[listOne[i]];
+    }
+
+    std::cout << similarity_score << std::endl;
 
     return 0;
 }
