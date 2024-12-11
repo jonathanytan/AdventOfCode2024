@@ -19,6 +19,8 @@ int main() {
 	std::smatch str_match;
 	std::regex reg("mul\\((\\d+),(\\d+)\\)");
 	
+	// where the magic happens so to speak. using this iterator we can visit every substring which
+	// matches the regex
 	std::sregex_iterator currentMatch(str.begin(), str.end(), reg);
 	std::sregex_iterator lastMatch;
 
