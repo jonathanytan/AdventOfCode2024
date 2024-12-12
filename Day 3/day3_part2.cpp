@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <regex>
+#include <string>
 
 int main() {
 	std::string str;
@@ -41,7 +42,7 @@ int main() {
 		// we actually do not need any of these calls to regex_match
 		// conditional can simply be (match.str() == "do()").
 		// this is because instantiating the sregex_iterator did all the work that could also be performed by
-		// regex_search. it will iterate through every valid mul(), do(), and don't()
+		// regex_search. it is set up to iterate through every valid mul(), do(), and don't()
 		if(regex_match(match.str(), do_reg)) {
 			multiply_enabled = true;
 		} else if(regex_match(match.str(), dont_reg)) {
