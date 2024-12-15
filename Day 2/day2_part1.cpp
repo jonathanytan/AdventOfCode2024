@@ -13,6 +13,7 @@ int main () {
     if (myFile.is_open()) {
         std::string str;
 
+        // found on stackoverflow, need to understand how this works
         while (std::getline(myFile, str)) {
             std::vector<int> temp_report; 
             std::istringstream iss(str);
