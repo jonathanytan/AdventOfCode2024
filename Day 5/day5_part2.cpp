@@ -15,9 +15,10 @@ std::vector<int> topologicalSort(std::unordered_map<int, std::vector<int>>& adj,
 		indegree[it] = 0;
 	}
 
-	// populate the indegree list by traversing the adjacency list
-	// we are only interested in keys and values which are present in the update so we need one check for the former
-	// and latter
+	// populate the indegree list by traversing the adjacency list.
+	// we are only interested in keys and values which are present in the update so as we
+	// traverse the edges, we only care about ones present in the update. so we need to check that the pages in key
+	// and the nodes in the value vector are present in the update.
 	for (const auto& [key, value] : adj) {
 
 		auto itr = find(update_list.begin(), update_list.end(), key);
@@ -114,7 +115,8 @@ int main() {
 				continue;
 			}
 
-			// 1) read page ordering rules and put them into a hash map
+			// 1) read page ordering rules and put them into a hash map. this builds our graph via representation through
+			// the adjacency list we populate
 			if (!blank_line_encountered) {
 				// generalizes for page numbers with any number of digits although not
 				// required for the problem
@@ -144,7 +146,8 @@ int main() {
 			// so we need two iterators: j and k. j is "stationary" and k moves.
 			for (int j = 0; j < update_list[i].size(); j++) {
 
-				// note the indices for k. we only need to check when required orders are violated,
+				// note the bounds for k. we only need to check when required orders are violated,
+				// so we only need to check backwards
 				for (int k = 0; k < j; k++) {
 					auto it = find(adjacency_list[update_list[i][j]].begin(), adjacency_list[update_list[i][j]].end(), update_list[i][k]);
 
@@ -157,7 +160,6 @@ int main() {
 
 			if (rule_violated) {
 				std::vector<int> linear_ordering = topologicalSort(adjacency_list, update_list[i]);
-
 				corrected_report_midpoint_sum += linear_ordering[linear_ordering.size() / 2];
 			}
 		}

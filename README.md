@@ -23,9 +23,6 @@ At some point will come back and implement solution with regex_search.
 ## Day 4
 Implementations are a little naive/hacky. Had to really think through and debug some of the bounds checking. I've seen some more elegant solutions out there so I'll have to familiarize myself with the word search type of problem. `.size()` returns an unsigned int so that was giving me some trouble because my conditionals had some index/bounds checking and comparisons with negative numbers so the conditionals were never being satisfied. For part 2, more would have to be adjusted for the code to work for target words of variable length.
 
-
-## Day 5
-
 `int main() {
     std::string str = "Hello, World!";
     char ch = 'o';
@@ -40,7 +37,8 @@ Implementations are a little naive/hacky. Had to really think through and debug 
     return 0;
 }``
 
-## Day 6
+## Day 5
+
 Topological sort: performed on a directed acyclic graph. The topological sort is a linear ordering of all vertices such that if the graph contains edge (u,v), then u,v appears before v in the ordering. 
 
 Two possible implementations: DFS and Kahn's algorithm. Might want to use the former if one doesn't have easy access to a list of all vertices and edges; more complex because it has explicit use of a stack; might be less desirable if the graph paths are long due to the many recursions required. If you do have all the vertices, may want to use the latter.
@@ -65,3 +63,11 @@ Need 3 structures:
 * Need to familiarize myself with various iterator syntax in for loops for various data structures.
 
 * If the number of nodes processed by Kahn's algorithm != the number of nodes in the graph, then the graph is not a DAG.
+
+* Indegree struct could have been pair<int, int>
+
+## Day 6
+
+* Need to keep track of which direction the guard is facing
+
+* Could be a good idea to make a class for each grid space? One variable for visited/unvisited, another for char
