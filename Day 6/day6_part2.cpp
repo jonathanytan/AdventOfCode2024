@@ -100,24 +100,6 @@ void markGuardInitialPosition(std::vector<std::string>& grid, std::unordered_map
     }
 }
 
-// Function which returns, given the orientation of the guard, a pair of the coordinates immediately to the right of the guard
-std::pair<int, int> findGuardsRightPosition(const std::vector<std::string>& grid, std::pair<int, int> guard_pos) {
-    std::pair<int, int> right_step = guard_pos;
-    char guard_orientation = grid[guard_pos.first][guard_pos.second];
-
-    if (guard_orientation == '^') {
-        right_step.second = guard_pos.second + 1;
-    } else if (guard_orientation == '>') {
-        right_step.first = right_step.first + 1;
-    } else if (guard_orientation == 'v') {
-        right_step.second = guard_pos.second - 1;
-    } else if (guard_orientation == '<') {
-        right_step.first = guard_pos.first - 1;
-    }
-
-    return right_step;
-}
-
 // Function that drives the first simulation of the guard's path. Returns false when the guard steps outside of the map and true otherwise.
 // Stores the guard's current position and orientation in o_map and updates the guard's position guard_pos.
 // Assumes there are no loops.
@@ -200,11 +182,12 @@ int main() {
 
     std::string str;
 
-    std::vector<std::string> grid;
+    std::vector<std::string> grid; // Grid used in first simulation
 
-    std::vector<std::string> loop_detection_grid; // Clean copy of 'grid' used to find potential patrol loops by placing new obstacles
+	// Clean copy of the untraversed grid. We will use it to run simulations 2 and on
+    std::vector<std::string> loop_detection_grid; 
 
-    std::pair<int, int> guard_starting_position;
+    std::pair<int, int> guard_starting_position; 
 
     std::pair<int, int> guard_position;
 
