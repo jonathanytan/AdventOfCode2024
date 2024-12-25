@@ -5,3 +5,9 @@ Day 1/input.txt
 *.exe
 *.txt
 Day 5/blah.cpp
+.vscode/settings.json
+.vscode/tasks.json
+Day 6/.vscode/settings.json
+Day 6/.vscode/tasks.json
+Day 6/backtracking.md
+Day 6/index.js

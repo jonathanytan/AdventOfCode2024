@@ -13,9 +13,9 @@ bool allOperatorsPlaced(std::vector<char> ops) {
 }
 
 // assume expression_values.size() > 1
-int getExpressionTotalSoFar(const std::vector<long long int>& expression_values, std::vector<char> operators) {
+long long int getExpressionTotalSoFar(const std::vector<long long int>& expression_values, std::vector<char> operators) {
     
-    int total = expression_values[0];
+    long long int total = expression_values[0];
     
     for(int i = 1; i < expression_values.size(); i++) {
         if(operators[i - 1] == '-')
@@ -28,11 +28,13 @@ int getExpressionTotalSoFar(const std::vector<long long int>& expression_values,
     return total;
 }
 
-bool backtrack(int test_value, const std::vector<long long int>& expression_numbers, std::vector<char>& operators) {
+bool backtrack(long long int test_value, const std::vector<long long int>& expression_numbers, std::vector<char>& operators) {
 
-    int expression_total_so_far = getExpressionTotalSoFar(expression_numbers, operators);
+    long long int expression_total_so_far = getExpressionTotalSoFar(expression_numbers, operators);
 
-    if(expression_total_so_far == test_value && allOperatorsPlaced(operators)) {
+    if(expression_total_so_far > test_value)
+        return false;
+    else if(expression_total_so_far == test_value && allOperatorsPlaced(operators)) {
         return true;
     } else {
         for(int i = 0; i < operators.size(); i++) {
@@ -60,7 +62,7 @@ bool backtrack(int test_value, const std::vector<long long int>& expression_numb
 
 int main () {
     std::ifstream my_file;
-    my_file.open("unit-test.txt");
+    my_file.open("input.txt");
     std::string str;
 
     std::vector<long long int> test_values;

@@ -49,18 +49,9 @@ Indegree of a node is the count of incoming edges. Outdegree of a node is the co
 
 A DAG has at least one node with indegree 0 and at least one node with outdegree 0. As the name suggests, no cycles. 0 indegree means no dependency on other nodes.
 
-
-
-Need 3 structures: 
-    indegree - hash map or vector
-    queue
-    sorted - stores the final linear ordering
-
 * Think of each update as its own small graph to "solve."
 
 * In some pedagogical examples, indegree is kept in a vector of ints where the vector indexes represent the node number and the stored values are the indegree values. However, that's not suitable for this problem because unlike in those examples, the nodes (pages) we're given for each update aren't "nice" (non-sequential, don't start from 0). At bottom, we need to keep a list of int-int pairs (page number-indegree number) so `unordered_map<int,int>` is suitable.
-
-* Need to familiarize myself with various iterator syntax in for loops for various data structures.
 
 * If the number of nodes processed by Kahn's algorithm != the number of nodes in the graph, then the graph is not a DAG.
 
@@ -68,29 +59,13 @@ Need 3 structures:
 
 ## Day 6
 
-* Need to keep track of which direction the guard is facing
-
-* Could be a good idea to make a class for each grid space? One variable for visited/unvisited, another for char
-
-* Guard enters a loop if she visits the same square for a second time with the same orientation
-
-* Only need to search a list of coordinates that the guard has been to
-
-* Store in an unordered_map<pair<int,int>, string>? Key is a pair<int,int> and value is the orientation of the guard
-
-* Part 2:
-
-* Two insights to this problem, neither of which I arrived on my own (which is fine! I am learning): 1) the guard enters a loop when she re-visits a tile with the same orientation. Hence, we need to keep track of both the guard's orientation at each visited tile as well as the coordinates of each visited tile. Keep track of this with unordered_map<int, char>. Originally tried making the key a pair but C++ has no hash function for pairs, so we make our own rudimentary one.
-
-At first tried to store visited positions and guard orientation with an unordered map, key = pair of coords, value was the guard orientation as a char but pairs as the value. Unfortunately, C++ doesn't have a hash function for pairs, so we need to come up with one.
-
-
-algorithm:
-    - run through the map once, every location traveled in orientation_map.
-    - iterate through every key-value pair in orientation_map, exclude guard's starting position
-        for each tile iterated through, place an obstacle at that tile, run the simulation until either 1) the guard visits an already-visited tile with a repeated orientation, 2) the guard exits the map
-
+* Two insights to this problem: 
+    1) the guard enters a loop when she re-visits a tile with the same orientation. Hence, we need to keep track of both the guard's orientation at each visited tile as well as the coordinates of each visited tile. Keep track of this with unordered_map<int, char>. The `int`: originally tried making the key a coordinate pair stored in a `pair` type, but C++ has no hash function for the type, so we make our own rudimentary hash. The char stores the orientation of the guard
+    
+    2) to find loop-creating obstacles, rather than place obstacles on every grid space, place them only on coordinates where the guard walks in a normal simulation
+* I've seen others represent directions numerically rather than with chars and these solutions seem neater so I will have to look into that.
+* Also learned about range-based for loops
 
 
 ## Day 7
-* Tried to add a "promising" check to prune unlikely results `if(expression_total_so_far <= test_value)` right after the beginning of the for loop in main, but it didn't quite work, for reasons I don't quite understand.
+* Used recursive backtracking. Had integer overflow issues that, once identified, were an easy fix. Pruning the search tree (if the total of the expression with the current number of operators set was greater than the target value, then that search path is invalid) reduced run time from 12.96s to 5.32s. Code not very friendly to adding extra operators; adding the || operators in part 2 required many more lines of code in the backtracking function.
