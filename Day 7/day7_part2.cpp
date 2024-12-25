@@ -13,24 +13,26 @@ bool allOperatorsPlaced(std::vector<char> ops) {
 }
 
 // assume expression_values.size() > 1
-int getExpressionTotalSoFar(const std::vector<long long int>& expression_values, std::vector<char> operators) {
+long long getExpressionTotalSoFar(const std::vector<long long>& expression_values, std::vector<char> operators) {
     
-    int total = expression_values[0];
+    long long total = expression_values[0];
     
     for(int i = 1; i < expression_values.size(); i++) {
         if(operators[i - 1] == '-')
             break;
         else if(operators[i - 1] == '*')
             total *= expression_values[i];
+        else if(operators[i - 1] == '|')
+            total = stoll(std::to_string(total) + std::to_string(expression_values[i]));
         else if(operators[i - 1] == '+')
             total += expression_values[i];
     }
     return total;
 }
 
-bool backtrack(int test_value, const std::vector<long long int>& expression_numbers, std::vector<char>& operators) {
+bool backtrack(long long test_value, const std::vector<long long>& expression_numbers, std::vector<char>& operators) {
 
-    int expression_total_so_far = getExpressionTotalSoFar(expression_numbers, operators);
+    long long expression_total_so_far = getExpressionTotalSoFar(expression_numbers, operators);
 
     if(expression_total_so_far == test_value && allOperatorsPlaced(operators)) {
         return true;
@@ -41,6 +43,22 @@ bool backtrack(int test_value, const std::vector<long long int>& expression_numb
                 if(backtrack(test_value, expression_numbers, operators)) 
                     return true;
                 else if(operators[i] == '*') {
+                    operators[i] = '|';
+                    if(backtrack(test_value, expression_numbers, operators)) {
+                        return true;
+                    } else if(operators[i] == '|') {
+                        operators[i] = '+';
+                        if(backtrack(test_value, expression_numbers, operators)) {
+                            return true;
+                        } else if(operators[i] == '+') {
+                            operators[i] = '-';
+                            return false;
+                        }
+                    } else if(operators[i] == '+') {
+                        operators[i] = '-';
+                        return false;
+                    }
+                } else if(operators[i] == '|') {
                     operators[i] = '+';
                     if(backtrack(test_value, expression_numbers, operators)) {
                         return true;
@@ -60,23 +78,23 @@ bool backtrack(int test_value, const std::vector<long long int>& expression_numb
 
 int main () {
     std::ifstream my_file;
-    my_file.open("unit-test.txt");
+    my_file.open("input.txt");
     std::string str;
 
-    std::vector<long long int> test_values;
-    std::vector<std::vector<long long int>> all_expression_numbers;
+    std::vector<long long> test_values;
+    std::vector<std::vector<long long>> all_expression_numbers;
 
-    long long int calibration_result = 0;
+    long long calibration_result = 0;
 
     if(my_file.is_open()) {
 
         // read values from input
         while(getline(my_file, str, ':')) { // reads in string of number before colon
-            test_values.push_back(stoll(str));
+            test_values.push_back(stoull(str));
             getline(my_file, str); // reads rest of string after colon 
             std::istringstream iss(str);
-            long long int num;
-            std::vector<long long int> single_expression_numbers;
+            long long num;
+            std::vector<long long> single_expression_numbers;
             while(iss >> num) {
                 single_expression_numbers.push_back(num);
             }
