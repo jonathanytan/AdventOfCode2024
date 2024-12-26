@@ -32,7 +32,7 @@ bool backtrack(long long int test_value, const std::vector<long long int>& expre
 
     long long int expression_total_so_far = getExpressionTotalSoFar(expression_numbers, operators);
 
-    if(expression_total_so_far > test_value)
+    if(expression_total_so_far > test_value) // "is branch promising?" statement whose pruning reduces run time by half
         return false;
     else if(expression_total_so_far == test_value && allOperatorsPlaced(operators)) {
         return true;
