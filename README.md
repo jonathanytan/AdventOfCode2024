@@ -52,7 +52,15 @@ A DAG has at least one node with indegree 0 and at least one node with outdegree
 * Also learned about range-based for loops
 
 ## Day 7
-Identified this as a backtracking problem and needed a major refresher. Set out on this problem after reviewing sample applications of backtracking algorithms in N-Queens and Sudoku solvers. Had integer overflow issues (silly, frustrating). I made significant improvements by pruning the search tree, which reduced run time from 12.96s to 5.32s for part 2; my pruning was based on the following insight: if the total of the expression with the current number of operators set was greater than the target value, then the rest of that search path must be invalid. When writing the backtracking function in part 1, I did not have adding other operators in mind. So the code in part 2 ballooned and quickly became unwieldy. Adding a fourth operator would be nightmarish. If further work was to be done, the function ought to be re-written.
+Identified this as a backtracking problem and needed a major refresher. I first reviewed sample applications of backtracking algorithms in N-Queens and Sudoku solvers. Had integer overflow issues (silly, frustrating). I made significant improvements by pruning the search tree, which reduced run time from 12.96s to 5.32s for part 2. Pruning was based on the following insight: we could exit out of a branch any time a portion of the expression was greater than the test value. 
+
+The code from part 1 could not easily accomodate the addition of more operators. Rather than re-write it for part 2, I managed to extend the solution into its unwieldy final state. Adding a fourth operator would be nightmarish. The function ought to be re-written.
 
 ## Day 8
 Overloaded binary operators to make adding instances of pair<int,int> easier. The approach was quite simple and bugs were resolved after I re-acquainted myself with vector addition. In part 2, by definition, every antenna is also an antinode.
+
+## Day 9
+
+* `(integer) + '0'`, where (integer) is a digit between 0-9 converts the integer into its char representation
+
+* `(char 0-9) - '0'`, where (char 0-9) is the char of a digit between 0-9 converts the char into its integer representation

@@ -71,6 +71,8 @@ void calculateAntinodes(const std::vector<std::string>& grid,
                 // check that antinodes are in bounds of graph and that we're not adding duplicates
                 while(nodeIsInGraph(antinode1, grid.size(), grid[0].size())) {
                     int hashed_antinode1 = hash_func(antinode1, grid.size());
+                    
+                    // check to make sure that antinode 1 isn't a duplicate
                     if(antinodes.find(hashed_antinode1) == antinodes.end())
                         antinodes.insert(hashed_antinode1);
                     antinode1 = antinode1 + value[i] - value[j];
