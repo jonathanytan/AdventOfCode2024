@@ -17,6 +17,7 @@ long long computeChecksum (const std::vector<int>& v) {
     return check_sum;
 }
 
+// Function that visualizes the memory block representation of the diskmap
 void printBlockRep(std::vector<int>& block_rep) {
     for(const int& n : block_rep) {
         if(n >= 0)

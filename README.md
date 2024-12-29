@@ -13,12 +13,12 @@ At some point will come back and implement solution with regex_search.
 
 `smatch` is a match results type that is filled with match info and submatches by the function `regex_match.` `smatch` has 3 member functions: `str()`, `position()`, and `length()`. Regex resources consulted: 
 
-*https://regexone.com/lesson/matching_characters?
-*https://regexr.com/
-*https://youtu.be/9K4N6MO_R1Y?si=0tsnSmABvHDySL8a
-*https://stackoverflow.com/questions/42983337/how-to-get-only-given-captured-group-regex-c
-*https://www.fluentcpp.com/2020/02/28/c-regex-101-simple-code-for-simple-cases-with-regexes/
-*https://www.geeksforgeeks.org/smatch-regex-regular-expressions-in-c/
+* https://regexone.com/lesson/matching_characters?
+* https://regexr.com/
+* https://youtu.be/9K4N6MO_R1Y?si=0tsnSmABvHDySL8a
+* https://stackoverflow.com/questions/42983337/how-to-get-only-given-captured-group-regex-c
+* https://www.fluentcpp.com/2020/02/28/c-regex-101-simple-code-for-simple-cases-with-regexes/
+* https://www.geeksforgeeks.org/smatch-regex-regular-expressions-in-c/
 
 ## Day 4
 Implementations are a little naive/hacky. Had to really think through and debug some of the bounds checking. I've seen some more elegant solutions out there so I'll have to familiarize myself with the word search type of problem. `.size()` returns an unsigned int so that was giving me some trouble because my conditionals had some index/bounds checking and comparisons with negative numbers so the conditionals were never being satisfied. For part 2, more would have to be adjusted for the code to work for target words of variable length.
@@ -57,10 +57,27 @@ Identified this as a backtracking problem and needed a major refresher. I first 
 The code from part 1 could not easily accomodate the addition of more operators. Rather than re-write it for part 2, I managed to extend the solution into its unwieldy final state. Adding a fourth operator would be nightmarish. The function ought to be re-written.
 
 ## Day 8
-Overloaded binary operators to make adding instances of pair<int,int> easier. The approach was quite simple and bugs were resolved after I re-acquainted myself with vector addition. In part 2, by definition, every antenna is also an antinode.
+Overloaded binary operators to make adding instances of pair<int,int> easier. Overloading operators for larger projects is a bad idea but our programs are small. The approach was quite simple and bugs were resolved after I re-acquainted myself with vector addition. In part 2, by definition, every antenna is also an antinode.
 
 ## Day 9
+* In part 1, I made a misstep where I first represented the memory block representation of the diskmap (e.g. `00..111.33) as a string. This works for file IDs from 0-9, but once you get into double digits that becomes a problem. So I switched to a vector of ints where -1 represented empty memory. Keep track of file IDs in a vector<int> wherein the index represents the ID and the data represents a file size.
+* In part 2, I added a list of every section of contiguous empty memory (both the index of the first block and the size).
+* In debugging figured out that my code was moving files rightward to empty spaces (expected behavior is to move them leftward)
 
-* `(integer) + '0'`, where (integer) is a digit between 0-9 converts the integer into its char representation
+## Day 10
 
-* `(char 0-9) - '0'`, where (char 0-9) is the char of a digit between 0-9 converts the char into its integer representation
+* Had to do a refresher on graph traversal and DFS. Looked at flood fill problem.
+    * Recursive implementation is cleaner, iterative implementation is useful because other graph traversal algorithms are structured similarly.
+* In part 1, there is no need for DFS. You do not run the risk of visiting a node you had previously visited - which is something you need to keep track of in a DFS implementation - because you can only travel to nodes that are 1 grade higher.
+* In part 1, for any particular trailhead, you need to keep track of 9-heights that were already visited in the traversal so you don't double count them for the trailhead score. In part 2, for a particular trailhead and a 9-height that's reachable, to find the number of different paths to that 9-height, simply remove the check - established in part 1 - which verifies if you've already visited that particular 9-height
+
+## Stray observations
+* sets and maps do not have a hash function for pair<int,int> so you must make your own
+* `emplace()` does in-place insertion. cf. `insert()`
+* Char <> int conversion
+    * `(integer) + '0'`, where (integer) is a digit between 0-9 converts the integer into its char representation
+    * `(char 0-9) - '0'`, where (char 0-9) is the char of a digit between 0-9 converts the char into its integer representation
+    * To remember these, you can think of adding `'0'` as adding the property of being a character and subtracting it as removing the quality of being a char
+* To get index of an element pointed to by a foward iterator: `fwd_itr - vec.begin()`. 
+* You can't compare (<, >, ==) forward and reverse iterators directly. To convert a reverse iterator, use `.base()` like in `bwd_itr.base() - 1`
+* for range-based for loops, when iterating on big objects, make sure to access by const reference. can also use `auto`
